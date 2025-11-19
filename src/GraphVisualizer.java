@@ -1,29 +1,55 @@
-import javax.swing.*;
+package org.example;
 
-public class GraphVisualizer {
+
+import javax.swing.*;
+import java.awt.*;
+
+
+// Main application class
+public class GraphVisualizer extends JFrame {
+    private Graph graph;
+    private GraphPanel graphPanel;
+
+
+    public GraphVisualizer(int[][] adjacencyMatrix) {
+        setTitle("Graph Visualizer");
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+        String [] label={"A","B","C","D","E","F"};
+        graph = new Graph(adjacencyMatrix,label);
+        graphPanel = new GraphPanel(graph);
+
+
+        add(graphPanel, BorderLayout.CENTER);
+
+
+        // Add info panel
+        JPanel infoPanel = new JPanel();
+        infoPanel.setLayout(new FlowLayout());
+        JLabel infoLabel = new JLabel("Drag nodes to rearrange. Edges show weights.");
+        infoPanel.add(infoLabel);
+        add(infoPanel, BorderLayout.SOUTH);
+
+
+        pack();
+        setLocationRelativeTo(null);
+    }
+
+
     public static void main(String[] args) {
-        // Example adjacency matrix (0 means no edge)
-        double[][] adjacencyMatrix = {
-                {0, 4, 0, 0, 0, 0, 0, 8, 0},
-                {4, 0, 8, 0, 0, 0, 0, 11, 0},
-                {0, 8, 0, 7, 0, 4, 0, 0, 2},
-                {0, 0, 7, 0, 9, 14, 0, 0, 0},
-                {0, 0, 0, 9, 0, 10, 0, 0, 0},
-                {0, 0, 4, 14, 10, 0, 2, 0, 0},
-                {0, 0, 0, 0, 0, 2, 0, 1, 6},
-                {8, 11, 0, 0, 0, 0, 1, 0, 7},
-                {0, 0, 2, 0, 0, 0, 6, 7, 0}
+        // Example adjacency matrix (weighted directed graph)
+        int[][] adjacencyMatrix = {
+                {0, 1, 0, 1, 0, 0},
+                {1, 0, 1, 0, 0, 0},
+                {0, 1, 0, 0, 0, 0},
+                {1, 0, 0, 0, 1, 1},
+                {0, 0, 0, 1, 0, 0},
+                {0, 0, 0, 1, 0, 0}
         };
 
-        WeightedDirectedGraph graph = new WeightedDirectedGraph(adjacencyMatrix);
 
         SwingUtilities.invokeLater(() -> {
-            JFrame frame = new JFrame("Weighted Directed Graph Visualizer");
-            frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
-            frame.add(new GraphPanel(graph));
-            frame.setSize(900, 700);
-            frame.setLocationRelativeTo(null);
-            frame.setVisible(true);
+            GraphVisualizer visualizer = new GraphVisualizer(adjacencyMatrix);
+            visualizer.setVisible(true);
         });
     }
 }
