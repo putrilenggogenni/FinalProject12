@@ -1,32 +1,38 @@
-import java.awt.*;
-import java.awt.geom.Point2D;
+package org.example;
 
-public class Node {
+
+import javax.swing.*;
+import java.awt.*;
+import java.awt.event.*;
+import java.util.*;
+
+
+// Node class representing a vertex in the graph
+class Node {
     private int id;
-    private Point2D.Double position;
+    private int x, y;
     private static final int RADIUS = 25;
 
-    public Node(int id, double x, double y) {
+
+    public Node(int id, int x, int y) {
         this.id = id;
-        this.position = new Point2D.Double(x, y);
+        this.x = x;
+        this.y = y;
     }
+
 
     public int getId() { return id; }
-    public Point2D.Double getPosition() { return position; }
+    public int getX() { return x; }
+    public int getY() { return y; }
+    public void setX(int x) { this.x = x; }
+    public void setY(int y) { this.y = y; }
     public int getRadius() { return RADIUS; }
 
-    public void draw(Graphics2D g2d) {
-        g2d.setColor(new Color(70, 130, 180));
-        g2d.fillOval((int)(position.x - RADIUS), (int)(position.y - RADIUS),
-                RADIUS * 2, RADIUS * 2);
-        g2d.setColor(Color.WHITE);
-        g2d.setFont(new Font("Arial", Font.BOLD, 14));
-        String label = String.valueOf(id);
-        FontMetrics fm = g2d.getFontMetrics();
-        int textWidth = fm.stringWidth(label);
-        int textHeight = fm.getAscent();
-        g2d.drawString(label,
-                (int)(position.x - textWidth / 2),
-                (int)(position.y + textHeight / 3));
+
+    public boolean contains(int px, int py) {
+        int dx = px - x;
+        int dy = py - y;
+        return dx * dx + dy * dy <= RADIUS * RADIUS;
     }
 }
+
